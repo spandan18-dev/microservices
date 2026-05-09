@@ -3,6 +3,6 @@ const http = require('http');
 
 const server = http.createServer(app);
 
-app.listen(3000,()=>{
-    console.log(`User Services http://localhost:3000`)
+app.listen(process.env.PORT,()=>{
+    console.log(`User Services http://localhost:${process.env.PORT}`)
 });
