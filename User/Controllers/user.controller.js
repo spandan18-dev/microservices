@@ -32,6 +32,8 @@ async function register (req,res) {
 
         const token = await jwt.sign({_id:user._id},process.env.JWT);
 
+        res.cookie('Token',token)
+
         res.status(200).json({
             message : "User register",
             Token : token
@@ -78,6 +80,8 @@ async function login (req,res) {
 
         const token = await jwt.sign({_id:user._id},process.env.JWT);
 
+        res.cookie('Token',token);
+
         res.status(200).json({
             message : "User logined",
             Token : token
@@ -93,7 +97,45 @@ async function login (req,res) {
 
 };
 
+async function logout (req,res){
+
+    try {
+        
+        const token = req.cookies.Token ;
+
+        res.clearCookie('token');
+
+        res.status(201).json({
+            message :"User logout sucesfully"
+        })
+
+    } catch (err) {
+        
+        res.status(500).json({
+            message : err.message
+        })
+
+    }
+
+};
+
+async function profile (req,res) {
+
+    try {
+        
+        res.send(req.user)
+
+    } catch (err) {
+        res.status(500).json({
+            message : "Server error "
+        });
+    };
+
+}
+
 module.exports = {
     register,
-    login
+    login,
+    logout,
+    profile
 }
