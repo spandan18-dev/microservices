@@ -1,4 +1,4 @@
-const User = require('../Models/user.model')
+const Captain = require('../Models/captain.model')
 const bcrypt = require ('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -14,28 +14,28 @@ async function register (req,res) {
             });
         };
 
-        const isUser = await User.findOne({email : email});
+        const isCaptain = await Captain.findOne({email : email});
 
-        if (isUser) {
+        if (isCaptain) {
             return res.status(400).json({
-                message : "User alredy exist"
+                message : "Captain alredy exist"
             });
         };
 
         const hashPassword = await bcrypt.hash(password ,10);
 
-        const user = await User.create({
+        const captain = await Captain.create({
             name,
             email,
             password : hashPassword
         });
 
-        const token = await jwt.sign({_id:user._id},process.env.JWT);
+        const token = await jwt.sign({_id:captain._id},process.env.JWT);
 
         res.cookie('Token',token)
 
         res.status(200).json({
-            message : "User register",
+            message : "Captain register",
             Token : token
         });
         
@@ -62,15 +62,15 @@ async function login (req,res) {
             });
         };
 
-        const user = await User.findOne({email}).select('+password');
+        const captain = await User.findOne({email}).select('+password');
 
-        if (!user) {
+        if (!captain) {
             return res.status(400).json({
-                message : "User does't exist"
+                message : "Captain does't exist"
             });
         };
 
-        const checkPass = await bcrypt.compare(password , user.password);
+        const checkPass = await bcrypt.compare(password , captain.password);
 
         if (!checkPass) {
             return res.status(400).json({
@@ -78,12 +78,12 @@ async function login (req,res) {
             });
         };
 
-        const token = await jwt.sign({_id:user._id},process.env.JWT);
+        const token = await jwt.sign({_id:captain._id},process.env.JWT);
 
         res.cookie('Token',token);
 
         res.status(200).json({
-            message : "User logined",
+            message : "Captain logined",
             Token : token
         });
         
@@ -106,7 +106,7 @@ async function logout (req,res){
         res.clearCookie('token');
 
         res.status(201).json({
-            message :"User logout sucesfully"
+            message :"Captain logout sucesfully"
         })
 
     } catch (err) {
@@ -123,7 +123,7 @@ async function profile (req,res) {
 
     try {
         
-        res.send(req.user)
+        res.send(req.captain)
 
     } catch (err) {
         res.status(500).json({

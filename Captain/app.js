@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
-const userRouter = require('./Routes/user.route');
-app.use('/',userRouter);
+const CaptainRoute = require('./Routes/captain.route');
+app.use('/',CaptainRoute);
 
 module.exports = app;
