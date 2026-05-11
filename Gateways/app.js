@@ -6,7 +6,10 @@ const app = express();
 app.use('/api/user',proxy("http://localhost:3001"));
 
 // Captain Service 
-app.use('/api/captain', proxy("http://localhost:3002"))
+app.use('/api/captain', proxy("http://localhost:3002"));
+
+//Ride Service 
+app.use('/api/ride',proxy("http://localhost:3003"))
 
 
 app.listen(3000,()=>{
@@ -14,3 +17,4 @@ app.listen(3000,()=>{
 })
 
 
+ 
