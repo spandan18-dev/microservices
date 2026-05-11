@@ -21,7 +21,7 @@ const captainSchema = new mongoose.Schema({
 
     isAvalable : {
         type : Boolean,
-        default : flase
+        default : false
     }
 
 });

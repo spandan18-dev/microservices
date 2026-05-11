@@ -5,7 +5,7 @@ module.exports = async function auth (req,res,next){
 
     try {
 
-        const token = req.cookie.Token || req.headers.authorization.split(' ')[1];
+        const token = req.cookies.Token || req.headers.authorization.split(' ')[1];
 
         if (!token) {
 

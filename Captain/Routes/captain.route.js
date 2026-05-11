@@ -10,7 +10,9 @@ router.post('/login',CaptainController.login);
 
 router.get('/logout',CaptainController.logout);
 
-router.get('/profile', auth ,CaptainController.profile)
+router.get('/profile', auth ,CaptainController.profile);
+
+router.put('/avalable' ,auth, CaptainController.isAvalable)
 
 
 module.exports = router;

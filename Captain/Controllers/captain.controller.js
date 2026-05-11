@@ -62,7 +62,7 @@ async function login (req,res) {
             });
         };
 
-        const captain = await User.findOne({email}).select('+password');
+        const captain = await Captain.findOne({email}).select('+password');
 
         if (!captain) {
             return res.status(400).json({
@@ -91,7 +91,7 @@ async function login (req,res) {
         console.error(err);
         return res.status(500).json({
             message : "Internal Server Error",
-            error : err
+            error : err.message
         });
     }
 
@@ -103,7 +103,7 @@ async function logout (req,res){
         
         const token = req.cookies.Token ;
 
-        res.clearCookie('token');
+        res.clearCookie('Token');
 
         res.status(201).json({
             message :"Captain logout sucesfully"
@@ -131,11 +131,39 @@ async function profile (req,res) {
         });
     };
 
+};
+
+
+async function isAvalable (req,res) {
+
+    try {
+
+
+        const captain = await Captain.findById(req.captain._id);
+
+        if (!captain) {
+            return res.status(400).json({
+                message : "Invalid captain"
+            });
+        };
+
+        captain.isAvalable = !captain.isAvalable;
+        await captain.save();
+        res.send(captain);
+
+
+    } catch (err) {
+        res.status(500).json({
+            message : "Internal Server error"
+        })
+    }
 }
+
 
 module.exports = {
     register,
     login,
     logout,
-    profile
+    profile,
+    isAvalable
 }

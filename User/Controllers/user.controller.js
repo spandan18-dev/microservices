@@ -30,7 +30,7 @@ async function register (req,res) {
             password : hashPassword
         });
 
-        const token = await jwt.sign({_id:user._id},process.env.JWT);
+        const token = jwt.sign({_id:user._id},process.env.JWT);
 
         res.cookie('Token',token)
 
@@ -78,7 +78,7 @@ async function login (req,res) {
             });
         };
 
-        const token = await jwt.sign({_id:user._id},process.env.JWT);
+        const token = jwt.sign({_id:user._id},process.env.JWT);
 
         res.cookie('Token',token);
 
@@ -101,9 +101,15 @@ async function logout (req,res){
 
     try {
         
-        const token = req.cookies.Token ;
+        const token = req.cookies?.Token ;
 
-        res.clearCookie('token');
+        if (!req.cookies) {
+             return res.status(400).json({
+             message: "Cookies not found"
+         });
+}
+
+        res.clearCookie('Token');
 
         res.status(201).json({
             message :"User logout sucesfully"

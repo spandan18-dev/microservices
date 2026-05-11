@@ -6,7 +6,7 @@ const app = express();
 app.use('/api/user',proxy("http://localhost:3001"));
 
 // Captain Service 
-app.use('/api/capatin', proxy("http://localhost:3002"))
+app.use('/api/captain', proxy("http://localhost:3002"))
 
 
 app.listen(3000,()=>{
