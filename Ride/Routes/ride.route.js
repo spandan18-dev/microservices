@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const authmiddleware = require('../Middlewares/auth.middleware');
+
+const authMiddleware = require('../Middlewares/auth.middleware');
+
 const rideController = require('../Controllers/ride.controller');
 
-router.post('/create-ride',authmiddleware.auth,rideController.createRide)
+router.post(
+    '/create-ride',
+    authMiddleware,
+    rideController.createRide
+);
 
-module.exports = router
+module.exports = router;

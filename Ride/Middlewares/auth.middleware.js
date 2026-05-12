@@ -5,7 +5,7 @@ module.exports = async function auth (req,res,next) {
 
     try {
         
-        const token = req.cookies.Token || req.headers.authorization.split(' ')[1];
+        const token = req.cookies.Token || req.headers.authorization?.split(' ')[1];
 
         if (!token) {
             return res.status(400).json({
@@ -13,7 +13,7 @@ module.exports = async function auth (req,res,next) {
             });
         };
 
-        const decode = await jwt.verify({token},process.env.JWT);
+        const decode =  jwt.verify(token,process.env.JWT);
 
         if (!decode) {
             return res.status(400).json({
@@ -21,11 +21,18 @@ module.exports = async function auth (req,res,next) {
             });
         };
 
-        const response = await axios.get(`${baseURL}/profile`);
+        const response = await axios.get(
+            `${process.env.BASEURL}/profile`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
 
         const user = response.data;
         if (!user) {
-            res.status(400).json({
+            return res.status(400).json({
                 message : "Unauthorize"
             });
         };
@@ -37,7 +44,8 @@ module.exports = async function auth (req,res,next) {
 
     } catch (err) {
         res.status(500).json({
-            message : "Internal Server error"
+            message : "Internal Server error",
+            error : err.message
         })
     }
 }
