@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const connectdb = require('./Db/db');
 const cookieParser = require('cookie-parser');
+const rabbitMq = require('./service/rabbit');
+
+rabbitMq.connect();
 
 connectdb();
 

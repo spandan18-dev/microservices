@@ -1,6 +1,7 @@
 const Captain = require('../Models/captain.model')
 const bcrypt = require ('bcrypt');
 const jwt = require('jsonwebtoken');
+const {subscribeToQueue} = require('../service/rabbit');
 
 async function register (req,res) {
 
@@ -154,10 +155,15 @@ async function isAvalable (req,res) {
 
     } catch (err) {
         res.status(500).json({
-            message : "Internal Server error"
+            message : "Internal Server error",
+            error : err.message
         })
     }
-}
+};
+
+subscribeToQueue('new-ride',(data)=>{
+    console.log(JSON.parse(data))
+});
 
 
 module.exports = {
