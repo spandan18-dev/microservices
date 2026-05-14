@@ -1,0 +1,69 @@
+services:
+
+  captain-service:
+    build:
+      context: ./Captain
+    restart: unless-stopped
+    environment:
+      - DB=mongodb://mongo:27017/captain-db
+      - RABBIT=amqp://rabbitmq:5672
+      - PORT=3002
+      - JWT=your-secret
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - microservice-node
+    
+
+  user-service:
+    build:
+      context: ./User
+    restart: unless-stopped
+    environment:
+      - DB=mongodb://mongo:27017/user-db
+      - RABBIT=amqp://rabbitmq:5672
+      - PORT=3001
+      - JWT=your-secret
+    networks:
+      - microservice-node
+
+  ride-service:
+    build:
+      context: ./Ride
+    restart: unless-stopped
+    environment:
+      - DB=mongodb://mongo:27017/ride-db
+      - RABBIT=amqp://rabbitmq:5672
+      - PORT=3003
+      - JWT=your-secret
+    networks:
+      - microservice-node
+
+  gateway:
+    build:
+      context: ./Gateways
+    ports:
+      - "3000:3000"
+    networks:
+      - microservice-node
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - microservice-node
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+    networks:
+      - microservice-node
+
+networks:
+  microservice-node:
+
+volumes:
+  mongo-data:
