@@ -17,4 +17,8 @@ app.use(cookieParser());
 const userRouter = require('./Routes/user.route');
 app.use('/',userRouter);
 
+app.get('/test', (req, res) => {
+    res.send('NGINX WORKING');
+});
+
 module.exports = app;

@@ -12,8 +12,8 @@ app.use('/api/captain', proxy("http://localhost:3002"));
 app.use('/api/ride',proxy("http://localhost:3003"))
 
 
-app.listen(3000,()=>{
-    console.log("http://localhost:3000")
+app.listen(3005,()=>{
+    console.log("http://localhost:3005")
 })
 
 
